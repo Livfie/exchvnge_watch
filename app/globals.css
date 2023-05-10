@@ -29,16 +29,33 @@ body {
     rgb(var(--background-start-rgb));
 }
 
-.header {
+header.exchvnge_header {
   background-color: var(--header-background-rgb);
   color: #fff;
   font-size: 14px;
   font-weight:bold;
   display:block;
-  
+  text-align:center;
+  position: fixed;
+  width:100%;
+  height: 45px;
+  display:block;
+  top:0;
+  z-index:100;
 }
 
-.footer {
-    background-color: var(--footer-background-rgb);
-    color: #fff;
+footer.exchvnge_footer {
+  background-color: var(--footer-background-rgb);
+  color: #fff;
+  text-align:center;
+  width: 100%;
+  height: 35px;
+  font-size:11px;
+  position: fixed;
+  bottom:0;
+}
+
+main{
+  display:block;
+  padding: 45px 15px 15px 45px
 }

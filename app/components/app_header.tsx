@@ -3,5 +3,5 @@ import Image from 'next/image'
 
 export default function AppHeader() {
 
-  return <div className="header"><h2>Exchvnge</h2></div>
+  return <header className="exchvnge_header"><h2>Exchvnge</h2></header>
 }
