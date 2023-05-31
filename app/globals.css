@@ -33,7 +33,7 @@ header.exchvnge_header {
   background-color: var(--header-background-rgb);
   color: #fff;
   font-size: 14px;
-  font-weight:bold;
+  font-weight:bold; 
   display:block;
   text-align:center;
   position: fixed;
@@ -42,18 +42,16 @@ header.exchvnge_header {
   display:block;
   top:0;
   z-index:100;
+  
 }
 
-header.exchvnge_heaer h1{
-  text-indent: -9999px;
+header.exchvnge_header img{
+  text-align:center;
+  margin:10px auto;
   display:block;
-  background-image: url(/exchvnge-logo-white.png) center center;
-  background-size: contain;
-  width:150px;
-  height: 40px;
-
+  width: 150px;
+  
 }
-
 
 footer.exchvnge_footer {
   background-color: var(--footer-background-rgb);
@@ -64,9 +62,19 @@ footer.exchvnge_footer {
   font-size:11px;
   position: fixed;
   bottom:0;
+  z-index:100;
 }
 
 main{
   display:block;
   padding: 45px 15px 15px 45px
+}
+
+.appBody{
+  width: 480px;
+  margin:0 auto;
+  display:block;
+  height: 100vh;
+  z-index:10;
+  
 }
