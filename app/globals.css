@@ -44,6 +44,17 @@ header.exchvnge_header {
   z-index:100;
 }
 
+header.exchvnge_heaer h1{
+  text-indent: -9999px;
+  display:block;
+  background-image: url(/exchvnge-logo-white.png) center center;
+  background-size: contain;
+  width:150px;
+  height: 40px;
+
+}
+
+
 footer.exchvnge_footer {
   background-color: var(--footer-background-rgb);
   color: #fff;
