@@ -19,6 +19,10 @@
   }
 }
 
+*{
+  box-sizing: border-box;
+}
+
 body {
   color: rgb(var(--foreground-rgb));
   background: linear-gradient(
@@ -30,7 +34,7 @@ body {
 }
 
 header.exchvnge_header {
-  background-color: var(--header-background-rgb);
+  background-color: #000;
   color: #fff;
   font-size: 14px;
   font-weight:bold; 
@@ -86,8 +90,7 @@ main{
 
 #live-view{
   z-index:5;
-
- padding-top:70px;
+  display:block;
  
 }
 
@@ -155,18 +158,37 @@ main{
 #live-view h1{
   margin:0 auto;
   font-size: 1.2rem;
-  margin: 80px auto 0 auto;
+  margin: 80px auto;
   text-align:center;
+  position:absolute;
+  width:100%;
+  top:0px;
+  left:0px;
+  z-index:50;
+}
+
+#stream-container {
+  display:relative;
+}
+
+#video-streams {
+  width: 100%;
+  height: 100vh;
+  position: relative;
+  margin: 0 auto;
+  z-index:5;
+  display:block;
+  background-color:#212121;
 
 }
 
 #chat-log{
     height: 30vh;
     overflow-y: scroll;
-    position:relative;
+    position:absolute;
     bottom: 60px;
-    width:100%;
     z-index: 20;
+    
 }
 
 #chat-log .chat{
@@ -201,4 +223,11 @@ main{
 
 .pinned-chat .sender, .pinned-chat .message{
   color:#333;
+}
+
+@media (max-width: 880px) {
+  #live-view, #stream-container{
+    padding-left: 0;
+    padding-right:0;
+  }
 }

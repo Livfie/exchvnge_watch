@@ -37,7 +37,7 @@ export default function Live( {params} : LiveProps) {
     }
 
     useEffect( () => {
-        const chatSub = onSnapshot(query(collection(firestore, "event-chat"), where("eventid", "==", params.eventid), orderBy("timestamp", "desc"), limit(100)), (snapshot) => {
+        const chatSub = onSnapshot(query(collection(firestore, "event-chat"), where("eventid", "==", params.eventid), orderBy("timestamp", "desc"), limit(200)), (snapshot) => {
             if(!snapshot.empty) {
 
                 const docs = snapshot.docs;
@@ -79,6 +79,8 @@ export default function Live( {params} : LiveProps) {
         <Container maxWidth="xl" id="live-view">
 
             <h1>{event != null ?  `${event["name"]} @ Exchvnge` : "Exchvnge" }</h1>
+            <Container maxWidth="xl" id="stream-container">
+            <Container maxWidth="md">
             <List id="chat-log">
                 {chats.map( (chat, index) => {
                     if(chat.isDeleted != true) {
@@ -91,6 +93,9 @@ export default function Live( {params} : LiveProps) {
                     }
                 })}
             </List>
+            </Container>
+            <Container maxWidth="md" id="video-streams">z</Container>
+            </Container>
         </Container>
     </main>
 } 
