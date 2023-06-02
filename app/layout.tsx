@@ -1,7 +1,9 @@
+
 import './globals.css'
 import { Inter } from 'next/font/google'
-import AppHeader from './components/app_header'
-import AppFooter from './components/app_footer'
+import { Container } from '@mui/material'
+import AppHeader from '../components/app_header'
+import AppFooter from '../components/app_footer'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -18,11 +20,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
+     
         <AppHeader />
-        <div className="appBody">
-          {children}
-        </div>
+       
+        {children}
+  
         <AppFooter />
+       
       </body>
     </html>
   )

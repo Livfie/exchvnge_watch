@@ -10,7 +10,7 @@
 
 */
 
-export const FirebaseConfig = {
+export const firebaseConfig = {
     apiKey: "AIzaSyBPcYPscHd82Fz-QaI2a5oAr5D3PjXxFQ0",
     authDomain: "livfieapp.firebaseapp.com",
     databaseURL: "https://livfieapp.firebaseio.com",
