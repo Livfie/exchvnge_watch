@@ -40,13 +40,13 @@ export default function Home() {
 
 
   return <main>
-     <Container maxWidth="md">
+     <Container maxWidth="xl" id="events-view">
     <ImageList cols={1} gap={5}>
     {events.map ( (event) => {
       console.log(event);
       return <ImageListItem key={event.id} className="event-item" >
         <Suspense fallback={<div>Loading...</div>}>
-                  <Link href={`/live/${event.id}`} passHref>
+                  <Link href={`/live/${event.id}?host=${event.host}`} passHref>
                   
                   <div className="event-image">
                  <Image src={event.image !== "" ?  event.image : "/appicon_black_1024.png"} alt={event.name} width="800" height="800" />

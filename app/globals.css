@@ -76,7 +76,19 @@ footer.exchvnge_footer img{
 
 main{
   display:block;
-  padding: 75px 15px 15px 45px
+ 
+}
+
+#events-view{
+  padding-top:70px;
+  z-index:5;
+}
+
+#live-view{
+  z-index:5;
+
+ padding-top:70px;
+ 
 }
 
 .event-item {
@@ -136,4 +148,57 @@ main{
   line-height: 30px;
   font-size:0.9rem;
   vertical-align: top;
+}
+
+
+
+#live-view h1{
+  margin:0 auto;
+  font-size: 1.2rem;
+  margin: 80px auto 0 auto;
+  text-align:center;
+
+}
+
+#chat-log{
+    height: 30vh;
+    overflow-y: scroll;
+    position:relative;
+    bottom: 60px;
+    width:100%;
+    z-index: 20;
+}
+
+#chat-log .chat{
+  margin-bottom:3px;
+  padding: 5px 15px;
+  text-shadow: 1px 1px #666;
+}
+
+#chat-log .pinned-chat{
+  background-color:#dedede;
+  border-radius: 30px;
+  padding: 5px 15px;
+  margin-bottom:3px;
+  text-shadow: 1px 1px #666;
+}
+
+#chat-log .chat-avatar{
+  width: 25px !important;
+  min-width: 25px !important;
+}
+
+#chat-log .sender{
+  margin-right: 10px;
+  font-weight: bold;
+  font-size: 0.8em;
+}
+
+#chat-log .message{
+  font-size: 0.8em;
+  font-weight: normal;
+}
+
+.pinned-chat .sender, .pinned-chat .message{
+  color:#333;
 }
