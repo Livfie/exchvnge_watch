@@ -41,9 +41,10 @@ export default function Home() {
 
   return <main>
      <Container maxWidth="xl" id="events-view">
+    { events.length === 0 && <center><h1>There's currently no live setEvents</h1></center>}
     <ImageList cols={1} gap={5}>
     {events.map ( (event) => {
-      console.log(event);
+     
       return <ImageListItem key={event.id} className="event-item" >
         <Suspense fallback={<div>Loading...</div>}>
                   <Link href={`/live/${event.id}?host=${event.host}`} passHref>
@@ -63,6 +64,7 @@ export default function Home() {
                  </Link></Suspense>
             </ImageListItem>
     })}
+    
     </ImageList>
     </Container>
   </main>
