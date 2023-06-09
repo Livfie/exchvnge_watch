@@ -97,6 +97,8 @@ export default function Live( {params} : LiveProps) {
             setHost(settingsFromURL.get("host")!);
         }
 
+        initAgora();
+
     }, []);
     
     useEffect( () => {
@@ -105,7 +107,7 @@ export default function Live( {params} : LiveProps) {
         if(ele !== null) {
             ele.scrollIntoView({behavior: "smooth"});
         }
-        initAgora();
+       
     });
 
     const initAgora = async () => {
@@ -142,10 +144,10 @@ export default function Live( {params} : LiveProps) {
                 await agoraEngine.subscribe(user, mediaType);
 
                 if(mediaType === "video") {
-               //     user.videoTrack?.play(`host-${user.uid}`);
+                    user.videoTrack?.play(`host-${user.uid}`);
                 }
                 if(mediaType === "audio") {
-                 //   user.audioTrack?.play();
+                    user.audioTrack?.play();
                 }
             });
 
@@ -153,9 +155,11 @@ export default function Live( {params} : LiveProps) {
                 agoraEngine.unsubscribe(user);
                 setLiveHosts(agoraEngine.remoteUsers);
 
-            });
+            }); 
 
-            await agoraEngine.join(AgoraAppID, params.eventid, null, null);
+            const uid = await agoraEngine.join(AgoraAppID, params.eventid, null, null);
+
+            //console.log("exchvnge " + uid + " joined channel");
             setJoined(true);
             setLiveHosts(agoraEngine.remoteUsers);
         } catch(err){
@@ -188,7 +192,7 @@ export default function Live( {params} : LiveProps) {
             <Grid container maxWidth="md" className={`remote-video-container host-count-${liveHosts.length}`} >
             { joined && 
                    liveHosts.map( (user : IAgoraRTCRemoteUser, index: number) => {
-                        return <Grid key={`host-${index}`} id={`host-${user.uid}`} className="remote-video" xs={liveHosts.length <=2 ? 12 : 6}></Grid>
+                        return <Grid key={`host-${index}`} id={`host-${user.uid}`} className={`remote-video ${user.uid == host ? "main-host" : ""}` } xs={liveHosts.length <=2 ? 12 : 6}></Grid>
                     })
                 }
             </Grid>

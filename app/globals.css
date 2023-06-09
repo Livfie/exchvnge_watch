@@ -165,6 +165,7 @@ main{
   top:0px;
   left:0px;
   z-index:50;
+  text-shadow: 1px 1px #000;
 }
 
 #stream-container {
@@ -239,6 +240,9 @@ main{
   display: flex;
   flex: 1;
   position:relative;
+  max-height: 100vh;
+  height: 100vh;
+  overflow: hidden;
   margin:0 auto !important;
 }
 
@@ -247,9 +251,9 @@ main{
   height: 100vh;
 }
 
-.remote-video-container.host-count-2 .remote-video{
-  height: 49vh;
-  margin-bottom:1vh;
+.remote-video-container.host-count-3 .remote-video, .remote-video-container.host-count-4 .remote-video{
+  height: 50vh;
+  margin-bottom:0;
   display:block;
 }
 
