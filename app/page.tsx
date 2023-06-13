@@ -41,7 +41,7 @@ export default function Home() {
 
   return <main>
      <Container maxWidth="xl" id="events-view">
-    { events.length === 0 && <center><h1>There's currently no live setEvents</h1></center>}
+    { events.length === 0 && <center><h1>There is currently no live setEvents</h1></center>}
     <ImageList cols={1} gap={5}>
     {events.map ( (event) => {
      

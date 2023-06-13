@@ -17,10 +17,10 @@ type LiveProps = {
     eventid: string;
 }
 
-export default function Live( {params} : LiveProps) {
+export default function Live( {params} : {params : LiveProps}) {
 
     const [host, setHost] = useState("");
-   // const [layout, setLayout] = useState("grid"); // gird | pip
+    const [videoLayout, setVideoLayout] = useState("grid"); // gird | pip
     const [event, setEvent] = useState<DocumentData | null>(null);
     const [chats, setChats] = useState<DocumentData[]>([]);
     const [liveHosts, setLiveHosts] = useState<IAgoraRTCRemoteUser[]>([]);
@@ -90,7 +90,7 @@ export default function Live( {params} : LiveProps) {
         const settingsFromURL = new URLSearchParams(window.location.search);
 
         if( settingsFromURL.get("layout") ) {
-            setLayout(settingsFromURL.get("layout")!);
+            setVideoLayout(settingsFromURL.get("layout")!);
         }
 
         if( settingsFromURL.get("host") ) {
@@ -140,12 +140,12 @@ export default function Live( {params} : LiveProps) {
             
             agoraEngine.on("user-joined", async (user : IAgoraRTCRemoteUser) => {
                 setLiveHosts(agoraEngine.remoteUsers);
-                console.log("exchvnge remote users joined:" , agoraEngine.remoteUsers);
+                //console.log("exchvnge remote users joined:" , agoraEngine.remoteUsers);
             });
 
             agoraEngine.on("user-left", async (user : IAgoraRTCRemoteUser) => {
                 setLiveHosts(agoraEngine.remoteUsers);
-                console.log("exchvnge remote users left:" , agoraEngine.remoteUsers);
+                //console.log("exchvnge remote users left:" , agoraEngine.remoteUsers);
             });
 
             agoraEngine.on("user-published", async (user : IAgoraRTCRemoteUser , mediaType: String) => {
