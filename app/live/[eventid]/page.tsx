@@ -25,6 +25,7 @@ export default function Live( {params} : LiveProps) {
     const [chats, setChats] = useState<DocumentData[]>([]);
     const [liveHosts, setLiveHosts] = useState<IAgoraRTCRemoteUser[]>([]);
     const [joined, setJoined] = useState(false);
+    const [hideChat, setHideChat] = useState(false);
     const app = initializeApp(firebaseConfig);
     const firestore = getFirestore(app);
     let agoraEngine: any;
@@ -47,12 +48,6 @@ export default function Live( {params} : LiveProps) {
         localBtnContainer: {backgroundColor: "#000" , }
       }
 
-    useEffect( () => {
-        if(params.eventid) {
-            getEventInfo();
-        }
-    }, []);
-
     const getEventInfo = async () => {
         const eventResult = await getDoc(doc(firestore, "events", params.eventid));
         if(eventResult.exists()) {
@@ -61,7 +56,9 @@ export default function Live( {params} : LiveProps) {
         }
     }
 
+    // on database update
     useEffect( () => {
+        if(!hideChat === true) {
         const chatSub = onSnapshot(query(collection(firestore, "event-chat"), where("eventid", "==", params.eventid), orderBy("timestamp", "desc"), limit(200)), (snapshot) => {
             if(!snapshot.empty) {
 
@@ -75,40 +72,61 @@ export default function Live( {params} : LiveProps) {
                     messages.push(chatData);
                 });
                 setChats(messages.reverse());
-               /*  var ele = document.getElementById("chat-log-container");
-                if (ele !== null ){
-                 ele.scrollTop = ele.scrollHeight;
-                 console.log(ele.scrollTop + " of " + ele.scrollHeight);
-                } */
+              
                 
             } 
 
         });
+        }
     }, [firestore]);
 
+    // on initial render
     useEffect( () => {
+
+        if(params.eventid) {
+            getEventInfo();
+        }
+
         const settingsFromURL = new URLSearchParams(window.location.search);
 
         if( settingsFromURL.get("layout") ) {
-          //  setLayout(settingsFromURL.get("layout")!);
+            setLayout(settingsFromURL.get("layout")!);
         }
 
         if( settingsFromURL.get("host") ) {
             setHost(settingsFromURL.get("host")!);
         }
+ 
+        if( settingsFromURL.get("hideChat") ) {
+            const hideChat = settingsFromURL.get("hideChat") == "true" ? true : false;
+          
+            setHideChat(hideChat);
+        }
+            
 
         initAgora();
 
+        // on cleanup
+        return () => {
+            console.log("exchvnge clean up ");
+            leaveChannel();
+            
+        };
+
     }, []);
-    
+
+    // on rerender
     useEffect( () => {
         const lastIndex = chats.length - 1;
         var ele = document.getElementById("chat-item-" + lastIndex);
         if(ele !== null) {
             ele.scrollIntoView({behavior: "smooth"});
         }
+        
        
     });
+
+   
 
     const initAgora = async () => {
         try {
@@ -132,19 +150,12 @@ export default function Live( {params} : LiveProps) {
 
             agoraEngine.on("user-published", async (user : IAgoraRTCRemoteUser , mediaType: String) => {
                 await agoraEngine.subscribe(user, mediaType);
-                console.log("exchvnge remote users:" , agoraEngine.remoteUsers);
-                setLiveHosts(agoraEngine.remoteUsers);
-                let index = 0;
-                for(var i=0; i< agoraEngine.remoteUsers.length; i++) {
-                    if(agoraEngine.remoteUsers[i].uid === user.uid) {
-                        index = i+1;
-                    }
-                }
-
-                await agoraEngine.subscribe(user, mediaType);
+              //  console.log("exchvnge remote users:" , agoraEngine.remoteUsers);
+              //  setLiveHosts(agoraEngine.remoteUsers);
+                
 
                 if(mediaType === "video") {
-                    user.videoTrack?.play(`host-${user.uid}`);
+                  setupHosts(agoraEngine.remoteUsers);
                 }
                 if(mediaType === "audio") {
                     user.audioTrack?.play();
@@ -153,13 +164,13 @@ export default function Live( {params} : LiveProps) {
 
             agoraEngine.on("user-unpublished", (user : IAgoraRTCRemoteUser) => {
                 agoraEngine.unsubscribe(user);
-                setLiveHosts(agoraEngine.remoteUsers);
+                setupHosts(agoraEngine.remoteUsers);
 
             }); 
 
             const uid = await agoraEngine.join(AgoraAppID, params.eventid, null, null);
 
-            //console.log("exchvnge " + uid + " joined channel");
+           
             setJoined(true);
             setLiveHosts(agoraEngine.remoteUsers);
         } catch(err){
@@ -168,6 +179,29 @@ export default function Live( {params} : LiveProps) {
     }
 
 
+    const setupHosts = (users : IAgoraRTCRemoteUser [] ) => {
+        setLiveHosts(agoraEngine.remoteUsers);
+        const container =  document.getElementById("remote-videos-container");
+        container!.innerHTML = "";
+        users.forEach( (user, index) => {
+            const videoContainer = document.createElement("div");
+            videoContainer.id = `remote-video-${user.uid}`;
+            videoContainer.className = "remote-video";
+            container?.appendChild(videoContainer);
+            user.videoTrack?.play(`remote-video-${user.uid}`);
+
+        });
+    }
+    
+
+    const leaveChannel = async () => {
+        try {
+            agoraEngine && agoraEngine.leave();
+        } catch (err){ 
+            console.error(err);
+        }
+    }
+
 
     return <main>
         <Container maxWidth="xl" id="live-view">
@@ -175,7 +209,7 @@ export default function Live( {params} : LiveProps) {
             <h1>{event != null ?  event["name"] : "Exchvnge" }</h1>
             <Container maxWidth="xl" id="stream-container">
             <Container maxWidth="md" id="chat-log-container">
-            <List id="chat-log">
+       <List id="chat-log">
                 {chats.map( (chat, index) => {
                     if(chat.deleted != true) {
                    return  <ListItem key={`chat-item-${index}`} id={`chat-item-${index}`} className={chat.isPinned ? "pinned-chat" : "chat"}>
@@ -189,12 +223,8 @@ export default function Live( {params} : LiveProps) {
             </List>
             </Container>
             
-            <Grid container maxWidth="md" className={`remote-video-container host-count-${liveHosts.length}`} >
-            { joined && 
-                   liveHosts.map( (user : IAgoraRTCRemoteUser, index: number) => {
-                        return <Grid key={`host-${index}`} id={`host-${user.uid}`} className={`remote-video ${user.uid == host ? "main-host" : ""}` } xs={liveHosts.length <=2 ? 12 : 6}></Grid>
-                    })
-                }
+            <Grid container maxWidth="md" id="remote-videos-container" className={`remote-videos-container host-count-${liveHosts.length}`} >
+            
             </Grid>
             </Container>
         </Container>

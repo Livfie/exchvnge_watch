@@ -233,7 +233,7 @@ main{
 }
 
 
-.remote-video-container {
+.remote-videos-container {
   display:block;
   min-height: 100vh;
   width:100%;
@@ -246,12 +246,14 @@ main{
   margin:0 auto !important;
 }
 
-.remote-video-container .remote-video {
+.remote-videos-container .remote-video {
   position:relative;
   height: 100vh;
+  width: 100%;
 }
 
-.remote-video-container.host-count-3 .remote-video, .remote-video-container.host-count-4 .remote-video{
+
+.remote-videos-container.host-count-2 .remote-video, .remote-videos-container.host-count-3 .remote-video, .remote-videos-container.host-count-4 .remote-video{
   height: 50vh;
   margin-bottom:0;
   display:block;
