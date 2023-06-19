@@ -88,7 +88,7 @@ export default function Live( {params} : {params : LiveProps}) {
       //  if(params.eventid) {
         if(settingsFromURL.get("eventid")) {
             setEventId(settingsFromURL.get("eventid")!);
-            getEventInfo(settingsFromURL.get("eventid"));
+            getEventInfo(settingsFromURL.get("eventid")!);
     
             if( settingsFromURL.get("layout") ) {
                 setVideoLayout(settingsFromURL.get("layout")!);
