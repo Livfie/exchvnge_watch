@@ -26,7 +26,7 @@ export default function Home() {
   }, []);
 
   const getEvents = async () => {
-    const eventsResult = await getDocs(query(collection(firestore, "events"), where("isLive", "==", true), where("isActive", "==", true), orderBy("eventDate", "desc")));
+    const eventsResult = await getDocs(query(collection(firestore, "events"), where("isActive", "==", true), orderBy("eventDate", "desc")));
 
     if(eventsResult.docs.length > 0){
       const tempEvents = eventsResult.docs.map( (doc) => {
@@ -47,10 +47,10 @@ export default function Home() {
      
       return <ImageListItem key={event.id} className="event-item" >
         <Suspense fallback={<div>Loading...</div>}>
-                  <Link href={`/live/${event.id}?host=${event.host}`} passHref>
+                  <Link href={`/live?eventid=${event.id}&host=${event.host}`} passHref>
                   
                   <div className="event-image">
-                 <Image src={event.image !== "" ?  event.image : "/appicon_black_1024.png"} alt={event.name} width="800" height="800" />
+                 <Image src={ "/appicon_black_1024.png"} alt={event.name} width="800" height="800" />
                  <div className="event-host">
                     <Avatar className="host-avatar" src={event.hostAvatar !== "" ?  event.hostAvatar : "/appicon_black_1024.png"} alt={event.hostname} sx={{ width: 30, height: 30 }} />
                     
